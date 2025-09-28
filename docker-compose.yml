@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  honeypot:
+    build:
+      context: .
+      dockerfile: Dockerfile.honeypot
+    container_name: vnc_honeypot
+    env_file:
+      - .env
+    volumes:
+      - ./events:/app/events
+      - ./honeypot_events.db:/app/honeypot_events.db
+    # Safe defaults: do not enable host networking / NET_ADMIN
+    # To enable iptables blocking, uncomment below (advanced, risky):
+    # network_mode: "host"
+    # cap_add:
+    #   - NET_ADMIN
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: vnc_api
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./events:/app/events
+      - ./honeypot_events.db:/app/honeypot_events.db
+    restart: unless-stopped

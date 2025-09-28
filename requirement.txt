@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+aiohttp
+python-json-logger
+scikit-learn
+pandas
+numpy
+python-iptables   # optional if you prefer library over subprocess
